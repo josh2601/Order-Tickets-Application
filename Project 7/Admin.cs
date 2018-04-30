@@ -65,6 +65,20 @@ namespace Project_7
             }
         }
 
+        private bool SearchMethod()
+        {
+            string searchValue = txtConfirmationNumber.Text;
+            
+            foreach (DataGridViewRow row in dataGridViewAdmin.Rows)
+            {
+                if (row.Cells[3].Value.ToString().Equals(searchValue))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -73,20 +87,27 @@ namespace Project_7
         private void btnFind_Click(object sender, EventArgs e)
         {
             dataGridViewAdmin.ClearSelection();
+            SearchMethod();
 
-            string searchValue = txtConfirmationNumber.Text;
-            int rowIndex = -1;
-
-            foreach(DataGridViewRow row in dataGridViewAdmin.Rows)
+            if (SearchMethod() == false)
             {
-                if (row.Cells[3].Value.ToString().Equals(searchValue))
+                MessageBox.Show("Confirmation number not found.");
+            }
+            else
+            {
+                string searchValue = txtConfirmationNumber.Text;
+                int rowIndex = -1;
+
+                foreach (DataGridViewRow row in dataGridViewAdmin.Rows)
                 {
-                    rowIndex = row.Index;
-                    dataGridViewAdmin.Rows[rowIndex].Selected = true;
-                    MessageBox.Show("Found confirmation number: " + txtConfirmationNumber.Text + Environment.NewLine
-                        + "Name: " + row.Cells[0].Value.ToString() + Environment.NewLine
-                        + "Total charge: $" + row.Cells[2].Value.ToString());
-                    break;
+                    if (row.Cells[3].Value.ToString().Equals(searchValue))
+                    {
+                        rowIndex = row.Index;
+                        dataGridViewAdmin.Rows[rowIndex].Selected = true;
+                        MessageBox.Show("Found confirmation number: " + txtConfirmationNumber.Text + Environment.NewLine
+                            + "Name: " + row.Cells[0].Value.ToString() + Environment.NewLine
+                            + "Total charge: $" + row.Cells[2].Value.ToString());
+                    }
                 }
             }
         }
